@@ -1,0 +1,98 @@
+
+#include <stdio.h>
+
+int main()
+{
+    int pages[50], frames[10];
+    int n, f, i, j, k, pos;
+    int faults = 0, hit, farthest, next;
+
+    printf("Enter number of pages: ");
+    scanf("%d", &n);
+
+    printf("Enter page reference string:\n");
+    for(i = 0; i < n; i++)
+        scanf("%d", &pages[i]);
+
+    printf("Enter number of frames: ");
+    scanf("%d", &f);
+
+    for(i = 0; i < f; i++)
+        frames[i] = -1;
+
+    for(i = 0; i < n; i++)
+    {
+        hit = 0;
+
+        for(j = 0; j < f; j++)
+        {
+            if(frames[j] == pages[i])
+            {
+                hit = 1;
+                break;
+            }
+        }
+
+        if(!hit)
+        {
+            pos = -1;
+
+            for(j = 0; j < f; j++)
+            {
+                if(frames[j] == -1)
+                {
+                    pos = j;
+                    break;
+                }
+            }
+
+            if(pos == -1)
+            {
+                farthest = -1;
+
+                for(j = 0; j < f; j++)
+                {
+                    next = n;
+
+                    for(k = i + 1; k < n; k++)
+                    {
+                        if(pages[k] == frames[j])
+                        {
+                            next = k;
+                            break;
+                        }
+                    }
+
+                    if(next > farthest)
+                    {
+                        farthest = next;
+                        pos = j;
+                    }
+                }
+            }
+
+            frames[pos] = pages[i];
+            faults++;
+        }
+
+        printf("\n%d\t", pages[i]);
+
+        for(k = 0; k < f; k++)
+        {
+            if(frames[k] != -1)
+                printf("%d ", frames[k]);
+            else
+                printf("- ");
+        }
+
+        if(hit)
+            printf("Hit");
+        else
+            printf("Fault");
+    }
+
+    printf("\n\nTotal Page Faults = %d\n", faults);
+    printf("Total Page Hits = %d\n", n - faults);
+
+    return 0;
+}

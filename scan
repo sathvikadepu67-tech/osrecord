@@ -1,0 +1,83 @@
+
+#include <stdio.h>
+#include <stdlib.h>
+
+int main()
+{
+    int req[50], n, head, size;
+    int i, j, temp, total = 0;
+
+    printf("Enter number of requests: ");
+    scanf("%d", &n);
+
+    printf("Enter request sequence:\n");
+    for(i = 0; i < n; i++)
+        scanf("%d", &req[i]);
+
+    printf("Enter initial head position: ");
+    scanf("%d", &head);
+
+    printf("Enter total number of cylinders: ");
+    scanf("%d", &size);
+
+    if(size <= 0 || head < 0 || head >= size)
+    {
+        printf("Invalid disk size or head position\n");
+        return 1;
+    }
+
+    for(i = 0; i < n; i++)
+    {
+        if(req[i] < 0 || req[i] >= size)
+        {
+            printf("Invalid request position\n");
+            return 1;
+        }
+    }
+
+    for(i = 0; i < n - 1; i++)
+    {
+        for(j = i + 1; j < n; j++)
+        {
+            if(req[i] > req[j])
+            {
+                temp = req[i];
+                req[i] = req[j];
+                req[j] = temp;
+            }
+        }
+    }
+
+    printf("\nSeek Sequence: %d", head);
+
+    for(i = 0; i < n; i++)
+    {
+        if(req[i] >= head)
+            break;
+    }
+
+    for(j = i - 1; j >= 0; j--)
+    {
+        total += abs(head - req[j]);
+        head = req[j];
+        printf(" -> %d", head);
+    }
+
+    if(i > 0)
+    {
+        total += head;
+        head = 0;
+        printf(" -> %d", head);
+    }
+
+    for(j = i; j < n; j++)
+    {
+        total += abs(head - req[j]);
+        head = req[j];
+        printf(" -> %d", head);
+    }
+
+    printf("\nTotal Head Movement = %d\n", total);
+
+    return 0;
+}

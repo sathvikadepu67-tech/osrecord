@@ -1,0 +1,44 @@
+
+#include <stdio.h>
+
+int main()
+{
+    int pages[20], n, i;
+    int pageSize, logicalAddress;
+    int pageNo, offset, physicalAddress;
+
+    printf("Enter number of pages: ");
+    scanf("%d", &n);
+
+    printf("Enter frame number for each page:\n");
+    for(i = 0; i < n; i++)
+    {
+        printf("Page %d: ", i);
+        scanf("%d", &pages[i]);
+    }
+
+    printf("Enter page size: ");
+    scanf("%d", &pageSize);
+
+    printf("Enter logical address: ");
+    scanf("%d", &logicalAddress);
+
+    pageNo = logicalAddress / pageSize;
+    offset = logicalAddress % pageSize;
+
+    if(pageNo >= n || logicalAddress < 0 || pageSize <= 0)
+    {
+        printf("Invalid logical address\n");
+    }
+    else
+    {
+        physicalAddress = pages[pageNo] * pageSize + offset;
+
+        printf("\nPage Number = %d", pageNo);
+        printf("\nOffset = %d", offset);
+        printf("\nFrame Number = %d", pages[pageNo]);
+        printf("\nPhysical Address = %d\n", physicalAddress);
+    }
+
+    return 0;
+}
